@@ -74,7 +74,7 @@ module.exports.createApplication = async (req, res) => {
   };
   
   // Delete an application
-  exports.deleteApplication = async (req, res) => {
+  module.exports.deleteApplication = async function deleteApplication(req, res)  {
     try {
       const { id } = req.params;
       const application = await Application.findByIdAndDelete(id);

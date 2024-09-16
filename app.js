@@ -13,6 +13,10 @@ app.listen(port,function(){
         server listening on port ${port}`); 
 });
 
+const jobRouter=require("./Router/jobRouter");
+const userRouter=require("./Router/userRouter");
+app.use("/user",userRouter);
+app.use("/job",jobRouter);
 
 // \
 //mini app
