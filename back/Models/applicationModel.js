@@ -14,25 +14,23 @@ mongoose.connect(db_link)
 const Schema = mongoose.Schema;
 
 const applicationSchema = new Schema({
-  applicationId: {
-    type: Schema.Types.ObjectId,
-    auto: true,
-    ref:"User", // Auto-generate an ObjectId
-    unique: true
-  },
-  jobId: {
-    type: Schema.Types.ObjectId,
-    ref: 'job', // Reference to the Job model
-    required: true
-  },
-
-  status: {
-    type: String,
-    enum: ['Pending', 'Reviewed', 'Interviewed', 'Rejected', 'Hired'],
-    default: 'Pending'
-  },
-
+  job:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'job',
+    required:true
+},
+applicant:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'user',
+    required:true
+},
+status:{
+    type:String,
+    enum:['pending', 'accepted', 'rejected'],
+    default:'pending'
+}
 },{timestamps:true});
+
 
 module.exports = mongoose.model('Application', applicationSchema);
 

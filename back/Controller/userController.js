@@ -1,5 +1,7 @@
 const express = require("express");
 const userModel = require("../Models/userModel");
+const getDataUri = require("../utils/utils/datauri");
+const cloudinary  = require("../utils/utils/cloudinary");
 
 module.exports.getUser = async function getUser(req, res) {
     const id = req.params.id;
@@ -24,33 +26,61 @@ module.exports.getUser = async function getUser(req, res) {
 };
 
 module.exports.updateUser = async function updateUser(req, res) {
-    console.log("req.body-> ", req.body);
     try {
-        let id = req.params.id;
-        console.log(id);
-        let user = await userModel.findById(id);
-        if (user) {
-            console.log('Inside user');
-            Object.keys(req.body).forEach(key => {
-                if (key !== 'confirmPassword') {
-                    user[key] = req.body[key];
-                }
-            });
-            user.confirmPassword = user.password; // Make sure this is intended
-            const updatedData = await user.save();
-            res.json({
-                message: "Data updated successfully",
-                data: updatedData,
-            });
-        } else {
-            res.status(404).json({
-                message: "User not found",
-            });
+        const { name, email, phoneNumber, bio, skills } = req.body;
+        
+        const file = req.file;
+        // cloudinary ayega idhar
+        const fileUri = getDataUri(file);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
+
+
+        let skillsArray;
+        if(skills){
+            skillsArray = skills.split(",");
         }
-    } catch (err) {
-        res.status(500).json({
-            message: err.message,
-        });
+        const userId = req.id; // middleware authentication
+        let user = await userModel.findById(userId);
+
+        if (!user) {
+            return res.status(400).json({
+                message: "User not found.",
+                success: false
+            })
+        }
+        // updating data
+        if(name) user.name = name
+        if(email) user.email = email
+        if(phoneNumber)  user.phoneNumber = phoneNumber
+        if(bio) user.profile.bio = bio
+        if(skills) user.profile.skills = skillsArray
+      
+        // resume comes later here...
+        if(cloudResponse){
+            user.profile.resume = cloudResponse.secure_url // save the cloudinary url
+            user.profile.resumeOriginalName = file.originalname // Save the original file name
+        }
+
+
+        await user.save();
+
+        user = {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: user.role,
+            profile: user.profile
+        }
+
+        return res.status(200).json({
+            message:"Profile updated successfully.",
+            user,
+            success:true
+        })
+    } catch (error) {
+        console.log(error);
     }
 };
 

@@ -3,39 +3,34 @@ const jobModel = require("../Models/jobModel");
 
 module.exports.createJob = async function createJob(req, res) {
     try {
-        
-        const userId=req.id;
-        const{title,description,requirements,salary,location,jobType,experienceLevel,position,company}=req.body;
+        const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
+        const userId = req.id;
 
-        if(!title||!description||!requirements||!salary||!location||!jobType||!experienceLevel||!position||!company){
-            return res.json({
-                message:"Something is missing",
-                success:false
+        if (!title || !description || !requirements || !salary || !location || !jobType || !experience || !position || !companyId) {
+            return res.status(400).json({
+                message: "Somethin is missing.",
+                success: false
             })
-        }
-      
-
-        
-        let createJob = await jobModel.create({
+        };
+        const job = await jobModel.create({
             title,
             description,
-            requirements:requirements,
-            salary:Number(salary),
+            requirements: requirements.split(","),
+            salary: Number(salary),
             location,
             jobType,
-            experienceLevel,
+            experienceLevel: experience,
             position,
-            company:company,
-            created_by:userId
+            company: companyId,
+            created_by: userId
         });
         return res.status(201).json({
-            message: "Job created successfully",
-            data: createJob
+            message: "New job created successfully.",
+            job,
+            success: true
         });
-    } catch (err) {
-        return res.json({
-            message: err.message
-        });
+    } catch (error) {
+        console.log(error);
     }
 };
 
@@ -53,8 +48,9 @@ module.exports.getAllJobs = async function getAllJob(req, res) {
         }).sort({createdAt:-1});
         if (jobs) {
             return res.status(200).json({
-                message: "Jobs fetched successfully",
-                data: jobs
+                
+                jobs,
+                success:true,
             });
         } else {
             return res.status(404).json({
@@ -62,16 +58,16 @@ module.exports.getAllJobs = async function getAllJob(req, res) {
             });
         }
     } catch (err) {
-        return res.json({
-            message: err.message
-        });
+       console.log(err);
     }
 };
 
 module.exports.getJobById = async function getJobById(req, res) {
     try {
         let id = req.params.id;
-        const job = await jobModel.findById(id);
+        const job = await jobModel.findById(id).populate({
+            path:"applications"
+        });
         if (!job) {
             return res.status(404).json({
                 message: "Job does not exist",
@@ -79,19 +75,21 @@ module.exports.getJobById = async function getJobById(req, res) {
         }
         return res.status(200).json({
             message: "Job retrieved successfully",
-            data: job,
+            job,
+            success:true
         });
     } catch (err) {
-        return res.json({
-            message: err.message
-        });
+       console.log(err);
     }
 };
 
 module.exports.getAdminJobs=async function getAdminJobs(req,res){
     try{
         const adminId=req.id;
-        const jobs=await jobModel.find({created_by:adminId});
+        const jobs=await jobModel.find({created_by:adminId}).populate({
+            path:'company',
+            createdAt:-1
+        });
         if(!jobs){
             return res.json({
                 message:"jobs not found",
@@ -100,7 +98,8 @@ module.exports.getAdminJobs=async function getAdminJobs(req,res){
         }
         return res.status(201).json({
             message:"job found",
-            data:jobs
+            jobs,
+            success:true,
         })
     }
     catch(err){
@@ -170,7 +169,7 @@ module.exports.getJobByType = async function getJobByType(req, res) {
     } catch (err) {
         return res.status(400).json({ error: err.message });
     }
-};
+}; 
 
 module.exports.sortBySalary = async function sortBySalary(req, res) {
     try {

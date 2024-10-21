@@ -1,0 +1,109 @@
+/* Navbar.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.dark {
+    background-color: #2d2d2d; /* Dark background for dark mode */
+}
+
+.container {
+    max-width: 1200px; /* Maximum width for the container */
+    margin: 0 auto; /* Center the container */
+    padding: 0 20px; /* Add horizontal padding */
+}
+
+.logo {
+    color: #333;
+}
+
+.logo .highlight {
+    color: #F83002; /* Highlight color for the logo */
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    font-weight: 500;
+}
+
+.nav-links li {
+    margin-right: 20px; /* Space between links */
+}
+
+.nav-links li a {
+    text-decoration: none; /* Remove underline from links */
+    color: #333; /* Link color */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+.nav-links li a:hover {
+    color: #F83002; /* Hover color */
+}
+
+.theme-toggle {
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor */
+    color: inherit; /* Inherit color from parent */
+    transition: transform 0.3s; /* Smooth transform transition */
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.btn-login, .btn-signup {
+    padding: 8px 12px; /* Add padding */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.btn-login {
+    background-color: transparent; /* Transparent background for login */
+    border: 1px solid #6A38C2; /* Border for login */
+    color: #6A38C2; /* Login text color */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.btn-login:hover {
+    background-color: #6A38C2; /* Background color on hover */
+    color: white; /* Text color on hover */
+}
+
+.btn-signup {
+    background-color: #6A38C2; /* Background color for signup */
+    color: white; /* Text color for signup */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.btn-signup:hover {
+    background-color: #5b30a6; /* Darker background on hover */
+}
+
+.avatar {
+    border: 2px solid #d1d5db; /* Light border for avatar */
+    border-radius: 50%; /* Make avatar circular */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.avatar:hover {
+    border-color: #F83002; /* Change border color on hover */
+}
+
+.popover-content {
+    min-width: 200px; /* Minimum width for popover */
+    background-color: white; /* Background color for popover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Shadow for popover */
+    border-radius: 8px; /* Rounded corners for popover */
+}

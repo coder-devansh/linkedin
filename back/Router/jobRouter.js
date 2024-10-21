@@ -16,7 +16,7 @@ router.get('/getadminjobs',jobController.getAdminJobs);
 router.get('/type', jobController.getJobByType);
 
 // Get a job listing by ID
-router.get('/:id', jobController.getJobById);
+router.get('/get/:id', jobController.getJobById);
 
 // Update a job listing by ID
 router.put('/:id', jobController.updateJob);

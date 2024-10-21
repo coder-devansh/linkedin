@@ -10,42 +10,39 @@ const db_link = "mongodb+srv://devanshbansal25072004:devansh123@backened.mgk9t.m
 mongoose.connect(db_link)
 
     .then(() => {
-        console.log('Jobmodel connected');
+        console.log('Companymodel connected');
     })
     .catch(err => {
-        console.error('MongoDB connection error in job:', err);
+        console.error('MongoDB connection error in company:', err);
     });
 
 
-const CompanySchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required:true
-    },
-    description: {
-        type: String,
-       
-    },
-    website: {
-        type: String,
-
-    },
-    location: {
-        type: String,
-        
-    },
-    logo: {
-        type: String
-    },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required:true
-        
-    }
-}, { timestamps: true },)
+    const companySchema = new mongoose.Schema({
+        name:{
+            type:String,
+            required:true,
+            unique:true
+        },
+        description:{
+            type:String, 
+        },
+        website:{
+            type:String 
+        },
+        location:{
+            type:String 
+        },
+        logo:{
+            type:String // URL to company logo
+        },
+        userId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'user',
+            required:true
+        }
+    },{timestamps:true})
 
 
 
-const companyModel = mongoose.model('Company', CompanySchema);
+const companyModel = mongoose.model('Company', companySchema);
 module.exports = companyModel;

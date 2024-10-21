@@ -58,7 +58,7 @@ const userSchema = new mongoose.Schema({
     default: 'student'
   },
   profile: {
-    type: String,
+   
     bio:{
       type:String,
     },
@@ -66,8 +66,9 @@ const userSchema = new mongoose.Schema({
     resume:{type:String},
     resumeOriginalName:{type:String},
     company:{type:mongoose.Schema.Types.ObjectId,ref:'Company'},
-    profilePhoto:{type:String,
-      default:""
+    profilePhoto:{
+      type:String,
+      default:"",
     },
    
   },
@@ -79,6 +80,6 @@ const userSchema = new mongoose.Schema({
  
   resetToken: String
 },{timestamps:true});
-const userModel=mongoose.model("User",userSchema);
+const userModel=mongoose.model("user",userSchema);
 
 module.exports=userModel;

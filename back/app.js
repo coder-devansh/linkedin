@@ -27,7 +27,8 @@ const applicationRouter=require("./Router/ApplicationRouter")
 app.use("/user",userRouter);
 app.use("/company",companyRouter)
 app.use("/job",jobRouter);
-app.use("/Application",applicationRouter);
+app.use("/application",applicationRouter);
+
 
 // \
 //mini app

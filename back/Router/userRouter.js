@@ -19,28 +19,6 @@ const {
 const  singleUpload  = require("./multer");
 
 // Multer configuration for file upload
-const multerStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/images');
-    },
-    filename: function (req, file, cb) {
-        cb(null, `user-${Date.now()}.jpeg`);
-    }
-});
-
-const filter = function (req, file, cb) {
-    if (file.mimetype.startsWith("image")) {
-        cb(null, true);
-    } else {
-        cb(new Error("Not an Image! Please upload an image"), false);
-    }
-};
-
-const upload = multer({
-    storage: multerStorage,
-    fileFilter: filter
-});
-
 // User Routes
 userRouter.route('/:id')
     .patch(updateUser)
@@ -64,8 +42,7 @@ userRouter.route('/resetpassword/:token')
 // Protected Routes
 userRouter.use(protectRoute);
 
-userRouter.route('/userProfile')
-    .get(getUser);
+userRouter.route("/profile/update").post(singleUpload,updateUser);
 
 // Admin-specific functions
 userRouter.use(isAuthorised(['recruiter', 'student']));

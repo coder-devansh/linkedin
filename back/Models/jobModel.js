@@ -21,53 +21,51 @@ const jobSchema = new Schema({
   title: {
     type: String,
     required: true
-  },
-  description: {
+},
+description: {
     type: String,
     required: true
-  },
-  requirements: {
-    type: [String],  // Array of strings
+},
+requirements: [{
+    type: String
+}],
+salary: {
+    type: Number,
     required: true
-  },
-  
-  salary: {
-    type: Number // Could also be Number for specific values
-  },  
-  location: {
-    type: String,  // Alternatively, use an object with city, state, country
-    required: true
-  },
-  experienceLevel:{
+},
+experienceLevel:{
     type:Number,
-    required:true
-
-  },
-  jobType: {
+    required:true,
+},
+location: {
     type: String,
-    enum: ['Full-time', 'Part-time', 'Contract', 'Internship'],
     required: true
-  },
-  position:{
-    type:Number,
-    required:true
-  },
-  company: {
+},
+jobType: {
+    type: String,
+    required: true
+},
+position: {
+    type: Number,
+    required: true
+},
+company: {
     type: mongoose.Schema.Types.ObjectId,
-   ref:'Company',
-   required:true
-  },
-  created_by:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'User',
-    required:true
-  },
-  applications:[
+    ref: 'Company',
+    required: true
+},
+created_by: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true
+},
+applications: [
     {
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Application"
-  }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Application',
+    }
 ]
+
     
 },{timestamps:true});
 

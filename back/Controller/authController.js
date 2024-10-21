@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../Models/userModel");
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
+const getDataUri = require("../utils/utils/datauri");
+const  cloudinary = require("../utils/utils/cloudinary");
 dotenv.config();
 
 module.exports.registerUser = async function registerUser(req, res) {
@@ -14,6 +16,12 @@ module.exports.registerUser = async function registerUser(req, res) {
                 success: false
             });
         }
+       
+        
+       
+        const file = req.file;
+        const fileUri = getDataUri(file);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(400).json({
@@ -27,8 +35,11 @@ module.exports.registerUser = async function registerUser(req, res) {
             email,
             phoneNumber,
             password: hashPassword,
-            confirmPassword:hashPassword,
+            confirmPassword: hashPassword,
             role,
+            profile:{
+                profilePhoto:cloudResponse.secure_url,
+            }
         });
         return res.status(201).json({
             message: "Account created successfully",
@@ -45,41 +56,71 @@ module.exports.registerUser = async function registerUser(req, res) {
 module.exports.login = async function login(req, res) {
     try {
         const { email, password, role } = req.body;
-        if (!email || !password) {
+
+        if (!email || !password || !role) {
             return res.status(400).json({
-                message: "Email and password are required",
+                message: "Something is missing",
+                success: false
+            });
+        };
+
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(400).json({
+                message: "Incorrect email or password.",
+                success: false,
             });
         }
 
-        const user = await userModel.findOne({ email });
-        if (user) {
-            if (role !== user.role) {
-                return res.status(400).json({
-                    message: "Role does not match"
-                });
-            }
-            const isPasswordMatch = await bcrypt.compare(password, user.password);
-            if (isPasswordMatch) {
-                const uid = user["_id"];
-                const token = jwt.sign({ payload: uid }, process.env.SECRET_KEY, { expiresIn: '2d' });
-                res.cookie("login", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true });
-                return res.json({
-                    message: `Welcome back ${user.name}`,
-                    data: user,
-                });
-            } else {
-                return res.status(400).json({
-                    message: "Password incorrect",
-                });
-            }
-        } else {
-            return res.status(404).json({
-                message: "Email not found",
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatch) {
+            return res.status(400).json({
+                message: "Incorrect email or password.",
+                success: false,
             });
-        }
-    } catch (err) {
+        };
+
+        // Check if the role matches
+        if (role !== user.role) {
+            return res.status(400).json({
+                message: "Account doesn't exist with current role.",
+                success: false
+            });
+        };
+
+        const tokenData = {
+            userId: user._id
+        };
+        const token = await jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: '1d' });
+
+        // Define cookie options
+        const cookieOptions = {
+            httpOnly: true,  // JavaScript can't access the cookie
+            secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS
+            sameSite: 'Strict', // Helps prevent CSRF attacks
+            maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
+        };
+
+        // Attach the token to a cookie and return the response
+        return res
+            .status(200)
+            .cookie("login", token, cookieOptions)
+            .json({
+                message: `Welcome back ${user.name}`,
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    phoneNumber: user.phoneNumber,
+                    role: user.role,
+                    profile: user.profile
+                },
+                success: true
+            });
+    } catch (error) {
+        console.log(error);
         return res.status(500).json({
-            message: err.message,
+            message: error.message
         });
     }
 };
@@ -143,7 +184,7 @@ module.exports.resetPassword = async function resetPassword(req, res) {
 
 module.exports.logout = async function logout(req, res) {
     try {
-        res.cookie("login", "", { maxAge: 0 });
+        res.clearCookie("login"); // Clear the login cookie
         return res.status(200).json({
             message: "Logged out successfully",
             success: true
@@ -155,8 +196,6 @@ module.exports.logout = async function logout(req, res) {
     }
 };
 
-
-
 module.exports.protectRoute = (req, res, next) => {
     const token = req.cookies.login; // or however you manage authentication
     if (!token) {
@@ -164,7 +203,7 @@ module.exports.protectRoute = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        req.id = decoded.payload; // Assuming the user's ID is in payload
+        req.id = decoded.userId; // Assuming the user's ID is in payload
         next();
     } catch (error) {
         return res.status(401).json({ message: "Invalid token" });
@@ -181,7 +220,7 @@ module.exports.isAuthorised = (allowedRoles) => {
             }
 
             const decoded = jwt.verify(token, process.env.SECRET_KEY);
-            const user = await userModel.findById(decoded.payload).select('-password'); // Exclude password from response
+            const user = await userModel.findById(decoded.userId).select('-password'); // Exclude password from response
 
             if (!user) {
                 return res.status(404).json({ message: "User not found" });

@@ -1,6 +1,7 @@
 const express=require("express");
 const {getCompany,updateCompany,getCompanyById,registerCompany}=require("../Controller/CompanyContoller");
-const {protectRoute}=require("../Controller/authController")
+const {protectRoute}=require("../Controller/authController");
+const singleUpload=require('./multer');
 
 const router=express.Router();
 
@@ -15,6 +16,6 @@ router.route("/get/:id")
 .get(getCompanyById)
 
 router.route("/update/:id")
-.put(updateCompany);
+.put(singleUpload,updateCompany);
 
 module.exports=router;
