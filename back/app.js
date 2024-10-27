@@ -4,6 +4,10 @@ var cors = require('cors');
 
 const cookieParser=require("cookie-parser")
 const companyRouter=require("./Router/CompanyRouter");
+const path=require("path");
+
+const _dirname=path.resolve();
+
 
 
 
@@ -16,10 +20,7 @@ app.use(cors({
     credentials: true,
   }));
 const port=process.env.PORT || 8080;
-app.listen(port,function(){
-    console.log(`
-        server listening on port ${port}`); 
-});
+
 
 const jobRouter=require("./Router/jobRouter");
 const userRouter=require("./Router/userRouter");
@@ -28,6 +29,16 @@ app.use("/user",userRouter);
 app.use("/company",companyRouter)
 app.use("/job",jobRouter);
 app.use("/application",applicationRouter);
+
+app.use(express.static(path.join(_dirname, "/frontened/frontend/dist")));
+app.get('*',(_,res)=>{
+  res.sendFile(path.resolve(_dirname,"frontened/frontend","dist","index.html"));
+})
+
+app.listen(port,function(){
+  console.log(`
+      server listening on port ${port}`); 
+});  
 
 
 // \
