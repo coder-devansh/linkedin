@@ -16,7 +16,7 @@ app.use(express.json()); //global middleware
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://localhost:5173'], // Adjust as needed
+    origin: ['http://localhost:5173', 'https://localhost:5173','https://linkedin-3jua.vercel.app/'], // Adjust as needed
     credentials: true,
   }));
 const port=process.env.PORT || 8080;
