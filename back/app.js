@@ -12,6 +12,9 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
   credentials: true, // Allow credentials (cookies or authorization tokens)
+  Access-Control-Allow-Origin: https://linkedin-3jua.vercel.app,
+Access-Control-Allow-Credentials: true,
+
 };
 
 // Use CORS middleware
