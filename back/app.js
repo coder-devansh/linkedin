@@ -1,34 +1,37 @@
 const express = require("express");
-const cors = require('cors');
+const app = express();
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const companyRouter = require("./Router/CompanyRouter");
 const path = require("path");
 
-const app = express();
-const port = process.env.PORT || 8080;
+const _dirname = path.resolve();
 
-// CORS configuration to allow the frontend URL (https://linkedin-3jua.vercel.app)
-const corsOptions = {
-  origin: 'https://linkedin-3jua.vercel.app', // Allow only this frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
-  credentials: true, // Allow credentials (cookies or authorization tokens)
-  Access-Control-Allow-Origin: https://linkedin-3jua.vercel.app,
-Access-Control-Allow-Credentials: true,
+// Middleware to parse JSON and URL-encoded data
+app.use(express.json()); // global middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-};
+// CORS configuration
+app.use(
+  cors({
+    origin: "http://localhost:5173","https://linkedin-3jua.vercel.app",  // Allow your frontend origin
+    credentials: true,  // Allow sending cookies and credentials
+  })
+);
 
-// Use CORS middleware
-app.use(cors(corsOptions));
+// Handle preflight OPTIONS request
+app.options('*', (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173","https://linkedin-3jua.vercel.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendStatus(204);  // No content
+});
 
-// Middleware functions
-app.use(express.json());  // Parse incoming JSON requests
-app.use(express.urlencoded({ extended: true }));  // Parse URL-encoded requests
-app.use(cookieParser());  // Cookie parser middleware
-
-// Routes for different endpoints
-const userRouter = require("./Router/userRouter");
-const companyRouter = require("./Router/CompanyRouter");
+// Routes setup
 const jobRouter = require("./Router/jobRouter");
+const userRouter = require("./Router/userRouter");
 const applicationRouter = require("./Router/ApplicationRouter");
 
 app.use("/user", userRouter);
@@ -36,14 +39,15 @@ app.use("/company", companyRouter);
 app.use("/job", jobRouter);
 app.use("/application", applicationRouter);
 
-// Serve static files for frontend
-const _dirname = path.resolve();
-app.use(express.static(path.join(_dirname, "frontend/frontend/dist")));
-app.get('*', (_, res) => {
-  res.sendFile(path.resolve(_dirname, "frontend/frontend", "dist", "index.html"));
+// Serve static files
+app.use(express.static(path.join(_dirname, "/frontened/frontend/dist")));
+
+// Catch-all route for single-page applications (SPA)
+app.get("*", (_, res) => {
+  res.sendFile(path.resolve(_dirname, "frontened/frontend", "dist", "index.html"));
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+const port = process.env.PORT || 8080;
+app.listen(port, function () {
+  console.log(`Server listening on port ${port}`);
 });
