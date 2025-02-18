@@ -1,4 +1,4 @@
-export const USER_API_END_POINT = "https://linkedin-s122.vercel.app/user";
-export const JOB_API_END_POINT = "https://linkedin-s122.vercel.app/job";
-export const APPLICATION_API_END_POINT = "https://linkedin-s122.vercel.app/application";
-export const COMPANY_API_END_POINT = "https://linkedin-s122.vercel.app/company";
+export const USER_API_END_POINT = "http://localhost:5173//user";
+export const JOB_API_END_POINT = "http://localhost:5173/job";
+export const APPLICATION_API_END_POINT = "http://localhost:5173/application";
+export const COMPANY_API_END_POINT = "http://localhost:5173/company";
