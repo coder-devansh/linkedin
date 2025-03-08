@@ -1,2 +1,26 @@
-# Ignore node modules
+# Node modules should not be committed
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.yarn-integrity
+.pnpm-debug.log*
+
+# Build and cache files
+dist/
+build/
+.cache/
+.vscode/
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs
+logs/
+*.log
