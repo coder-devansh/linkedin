@@ -15,10 +15,11 @@ app.use(cookieParser());
 // CORS configuration
 app.use(
   cors({
-    origin: "http://localhost:5173","https://linkedin-3jua.vercel.app",  // Allow your frontend origin
-    credentials: true,  // Allow sending cookies and credentials
+    origin: ["http://localhost:5173", "https://linkedin-3jua.vercel.app"], // Allow your frontend origins
+    credentials: true, // Allow sending cookies and credentials
   })
 );
+
 
 // Handle preflight OPTIONS request
 app.options('*', (req, res) => {
