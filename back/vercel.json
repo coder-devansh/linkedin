@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "back/app.js",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "frontened/frontend/package.json",
+        "use": "@vercel/static-build",
+        "config": { "distDir": "frontened/frontend/build" }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "/back/app.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/frontened/frontend/build/index.html"
+      }
+    ],
+    "env": {
+      "NODE_ENV": "production",
+      "MONGO_URI": "mongodb+srv://devanshbansal25072004:devansh123@backened.mgk9t.mongodb.net/?retryWrites=true&w=majority&appName=Backened",
+      "JWT_SECRET": "efgjhknmllkjfhdxgbvnoyghbvnkoi"
+    }
+  }
+  
