@@ -2,22 +2,24 @@
   "version": 2,
   "builds": [
     {
-      "src": "back/app.js",  // Path to the backend entry file in the back folder
+      "src": "back/app.js", 
       "use": "@vercel/node"
     },
     {
-      "src": "frontened/frontend/package.json",  // Correct path to your frontend's package.json
+      "src": "frontened/frontend/package.json", 
       "use": "@vercel/static-build",
-      "config": { "distDir": "frontened/frontend/build" }  // Path to the build directory of your frontend
+      "config": { 
+        "distDir": "frontened/frontend/build"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",  // This matches your backend API routes
+      "src": "/api/(.*)",
       "dest": "/back/app.js"
     },
     {
-      "src": "/(.*)",  // This serves your frontend files (static)
+      "src": "/(.*)",
       "dest": "/frontened/frontend/build/index.html"
     }
   ],
