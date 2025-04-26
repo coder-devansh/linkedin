@@ -12,11 +12,10 @@ app.use(express.json()); // global middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// CORS configuration
 app.use(
   cors({
-    origin: ["http://localhost:5173","https://linkedin-3jua.vercel.app","https://linkedin-gfct.vercel.app"],  // Allow your frontend origin
-    credentials: true,  // Allow sending cookies and credentials
+    origin: "*", // allow all origins
+    
   })
 );
 
