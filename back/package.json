@@ -4,9 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon back/app.js",
-    "start": "node back/app.js",           // Production start
-    "build": "echo 'No build needed for backend'"   // Dummy build for Render
+    "dev": "nodemon app.js",
+    "start": "node app.js",           // Production start
   },
   "keywords": [],
   "author": "",
