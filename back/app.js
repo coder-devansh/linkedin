@@ -14,13 +14,13 @@ app.use(cookieParser());
 // CORS Setup
 app.use(
   cors({
-    origin: "*", // allow ANY origin
-    // only if you are sending cookies
+    origin: (origin, callback) => {
+      // Allow all origins in development (for production, list allowed domains)
+      callback(null, true);
+    },
+    credentials: true, // allow cookies (if frontend sends withCredentials: true)
   })
 );
-
-
-// Remove manual OPTIONS handler (cors package automatically handles preflight requests)
 
 // Routes setup
 const companyRouter = require("./Router/CompanyRouter");
@@ -34,12 +34,11 @@ app.use("/job", jobRouter);
 app.use("/application", applicationRouter);
 
 // Serve static files
-app.use(express.static(path.join(_dirname, "/frontened/frontend/dist"))); // Fix "frontened" typo
+app.use(express.static(path.join(_dirname, "/frontend/frontend/dist"))); // fixed "frontened"
 
-// Catch-all route
+// Catch-all route for SPA (Single Page Application)
 app.get("*", (_, res) => {
-  res.sendFile(path.resolve(_dirname, "frontened/frontend", "dist", "index.html"));
+  res.sendFile(path.resolve(_dirname, "frontend/frontend", "dist", "index.html"));
 });
 
-
-module.exports = app; 
+module.exports = app;
