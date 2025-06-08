@@ -11,14 +11,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// CORS Setup
+// CORS Setup — THIS FIXES YOUR ERROR
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow all origins in development (for production, list allowed domains)
-      callback(null, true);
-    },
-    credentials: true, // allow cookies (if frontend sends withCredentials: true)
+    origin: "https://linkedin-3jua.vercel.app", // Your frontend domain
+    credentials: true, // Allow cookies / credentials
   })
 );
 
