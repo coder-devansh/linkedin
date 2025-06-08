@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon back/app.js",
-    "build": "npm install && npm install --prefix frontened/frontend && npm run build --prefix frontened/frontend",
-    "start": "nodemon back/app.js"
+    "start": "node back/app.js",           // Production start
+    "build": "echo 'No build needed for backend'"   // Dummy build for Render
   },
   "keywords": [],
   "author": "",
