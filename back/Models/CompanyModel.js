@@ -1,6 +1,6 @@
 
 const emailValidator = require('email-validator');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 
