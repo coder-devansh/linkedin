@@ -3,6 +3,10 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const dotenv = require("dotenv");
+
+// Load environment variables from .env file
+dotenv.config(); // Fixed: Call the config() function
 
 const _dirname = path.resolve();
 
@@ -11,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// CORS Setup — THIS FIXES YOUR ERROR
+// CORS Setup
 app.use(
   cors({
     origin: "https://linkedin-3jua.vercel.app", // Your frontend domain
@@ -31,11 +35,11 @@ app.use("/job", jobRouter);
 app.use("/application", applicationRouter);
 
 // Serve static files
-app.use(express.static(path.join(_dirname, "/frontend/frontend/dist"))); // fixed "frontened"
+app.use(express.static(path.join(_dirname, "/frontend/dist"))); // Fixed path typo ("frontened" → "frontend")
 
 // Catch-all route for SPA (Single Page Application)
 app.get("*", (_, res) => {
-  res.sendFile(path.resolve(_dirname, "frontend/frontend", "dist", "index.html"));
+  res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
 });
 
 module.exports = app;
