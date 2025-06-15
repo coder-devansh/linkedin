@@ -42,7 +42,10 @@ app.get("*", (_, res) => {
   res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
 });
 
-app.listen(8080, () => {
-    console.log(`Server running on port ${8080}`);
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
 module.exports = app;
