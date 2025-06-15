@@ -42,8 +42,6 @@ app.get("*", (_, res) => {
   res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
 });
 
-const express = require("express");
-const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
