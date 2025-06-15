@@ -18,7 +18,7 @@ app.use(cookieParser());
 // CORS Setup
 app.use(
   cors({
-    origin: "https://linkedin-3jua.vercel.app", // Your frontend domain
+    origin:["http://localhost:5173","https://linkedin-3jua.vercel.app"], // Your frontend domain
     credentials: true, // Allow cookies / credentials
   })
 );
@@ -42,4 +42,7 @@ app.get("*", (_, res) => {
   res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
 });
 
+app.listen(8080, () => {
+    console.log(`Server running on port ${8080}`);
+});
 module.exports = app;
