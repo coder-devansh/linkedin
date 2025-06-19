@@ -4,15 +4,16 @@ import Job from './Job';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
+import FilterCard from './FilterCard';
 
 const Browse = () => {
   useGetAllJobs();
-  const { allJobs } = useSelector((store) => store.job);
+  const { allJobs } = useSelector(state => state.job);
   const dispatch = useDispatch();
 
   useEffect(() => {
     return () => {
-      dispatch(setSearchedQuery(''));
+      dispatch(setSearchedQuery(""));
     };
   }, [dispatch]);
 
@@ -26,7 +27,7 @@ const Browse = () => {
         </h1>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* FilterCard Sidebar */}
+          {/* Filters */}
           <div className="w-full lg:w-1/3">
             <FilterCard />
           </div>
