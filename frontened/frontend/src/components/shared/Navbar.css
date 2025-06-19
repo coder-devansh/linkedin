@@ -1,109 +1,148 @@
 /* Navbar.css */
 
+/* Base styles */
 body {
-    font-family: 'Arial', sans-serif;
-    transition: background-color 0.3s ease;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: #f9fafb;
+    color: #1f2937;
 }
 
+body.dark-mode {
+    background-color: #1f2937;
+    color: #f9fafb;
+}
+
+/* Navbar */
 .navbar {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: white;
-    transition: background-color 0.3s;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
 }
 
 .navbar.dark {
-    background-color: #2d2d2d; /* Dark background for dark mode */
+    background-color: #111827;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
 }
 
+/* Container */
 .container {
-    max-width: 1200px; /* Maximum width for the container */
-    margin: 0 auto; /* Center the container */
-    padding: 0 20px; /* Add horizontal padding */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
+/* Logo */
 .logo {
-    color: #333;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #111827;
 }
 
 .logo .highlight {
-    color: #F83002; /* Highlight color for the logo */
+    color: #6366f1; /* Indigo-500 */
 }
 
+.navbar.dark .logo {
+    color: #f9fafb;
+}
+
+/* Navigation Links */
 .nav-links {
     display: flex;
+    gap: 24px;
     list-style: none;
     font-weight: 500;
 }
 
-.nav-links li {
-    margin-right: 20px; /* Space between links */
+.nav-links li a {
+    text-decoration: none;
+    color: #374151;
+    transition: color 0.3s;
 }
 
-.nav-links li a {
-    text-decoration: none; /* Remove underline from links */
-    color: #333; /* Link color */
-    transition: color 0.3s; /* Smooth color transition */
+.navbar.dark .nav-links li a {
+    color: #d1d5db;
 }
 
 .nav-links li a:hover {
-    color: #F83002; /* Hover color */
+    color: #6366f1; /* Indigo hover */
 }
 
+/* Theme Toggle Button */
 .theme-toggle {
-    background: none; /* Remove background */
-    border: none; /* Remove border */
-    cursor: pointer; /* Pointer cursor */
-    color: inherit; /* Inherit color from parent */
-    transition: transform 0.3s; /* Smooth transform transition */
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    transition: transform 0.2s ease-in-out;
 }
 
 .theme-toggle:hover {
-    transform: scale(1.1); /* Slightly enlarge on hover */
+    transform: rotate(15deg) scale(1.1);
 }
 
+/* Buttons */
 .btn-login, .btn-signup {
-    padding: 8px 12px; /* Add padding */
-    border-radius: 8px; /* Rounded corners */
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease-in-out;
 }
 
 .btn-login {
-    background-color: transparent; /* Transparent background for login */
-    border: 1px solid #6A38C2; /* Border for login */
-    color: #6A38C2; /* Login text color */
-    transition: background-color 0.3s; /* Smooth transition */
+    background-color: transparent;
+    border: 1px solid #6366f1;
+    color: #6366f1;
 }
 
 .btn-login:hover {
-    background-color: #6A38C2; /* Background color on hover */
-    color: white; /* Text color on hover */
+    background-color: #6366f1;
+    color: white;
 }
 
 .btn-signup {
-    background-color: #6A38C2; /* Background color for signup */
-    color: white; /* Text color for signup */
-    transition: background-color 0.3s; /* Smooth transition */
+    background-color: #6366f1;
+    color: white;
 }
 
 .btn-signup:hover {
-    background-color: #5b30a6; /* Darker background on hover */
+    background-color: #4f46e5;
 }
 
+/* Avatar */
 .avatar {
-    border: 2px solid #d1d5db; /* Light border for avatar */
-    border-radius: 50%; /* Make avatar circular */
-    transition: border-color 0.3s; /* Smooth transition for border color */
+    border: 2px solid #e5e7eb;
+    border-radius: 50%;
+    transition: border-color 0.3s ease;
+    width: 36px;
+    height: 36px;
 }
 
 .avatar:hover {
-    border-color: #F83002; /* Change border color on hover */
+    border-color: #6366f1;
 }
 
+/* Popover */
 .popover-content {
-    min-width: 200px; /* Minimum width for popover */
-    background-color: white; /* Background color for popover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Shadow for popover */
-    border-radius: 8px; /* Rounded corners for popover */
+    min-width: 200px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar.dark .popover-content {
+    background-color: #1f2937;
+    color: #f9fafb;
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.05);
 }
